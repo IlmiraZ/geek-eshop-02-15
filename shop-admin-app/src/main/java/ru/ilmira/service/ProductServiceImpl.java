@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ilmira.controller.NotFoundException;
+import ru.ilmira.controller.dto.BrandDto;
 import ru.ilmira.controller.dto.CategoryDto;
 import ru.ilmira.controller.dto.ProductDto;
+import ru.ilmira.persist.model.Brand;
 import ru.ilmira.persist.model.Picture;
+import ru.ilmira.persist.repository.BrandRepository;
 import ru.ilmira.persist.repository.CategoryRepository;
 import ru.ilmira.persist.repository.ProductRepository;
 import ru.ilmira.persist.specification.ProductSpecification;
@@ -30,18 +33,21 @@ public class ProductServiceImpl implements ProductService {
 
     private final CategoryRepository categoryRepository;
 
+    private  final BrandRepository brandRepository;
+
     private final PictureService pictureService;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository,
-                              CategoryRepository categoryRepository, PictureService pictureService) {
+                              CategoryRepository categoryRepository, BrandRepository brandRepository, PictureService pictureService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.brandRepository = brandRepository;
         this.pictureService = pictureService;
     }
 
     @Override
-    public Page<ProductDto> findAll(Optional<Long> categoryId, Optional<String> namePattern,
+    public Page<ProductDto> findAll(Optional<Long> categoryId, Optional<Long> brandId, Optional<String> namePattern,
                                     Integer page, Integer size, String sortField) {
         Specification<Product> spec = Specification.where(null);
         if (categoryId.isPresent() && categoryId.get() != -1) {
@@ -56,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
                         product.getDescription(),
                         product.getPrice(),
                         new CategoryDto(product.getCategory().getId(), product.getCategory().getName()),
+                        new BrandDto(product.getBrand().getId(),product.getBrand().getName()),
                         product.getPictures().stream().map(Picture::getId).collect(Collectors.toList())));
     }
 
@@ -67,6 +74,7 @@ public class ProductServiceImpl implements ProductService {
                         product.getDescription(),
                         product.getPrice(),
                         new CategoryDto(product.getCategory().getId(), product.getCategory().getName()),
+                        new BrandDto(product.getBrand().getId(),product.getBrand().getName()),
                         product.getPictures().stream().map(Picture::getId).collect(Collectors.toList())));
     }
 
@@ -77,9 +85,12 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new NotFoundException("")) : new Product();
         Category category = categoryRepository.findById(productDto.getCategory().getId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+        Brand brand = brandRepository.findById(productDto.getBrand().getId())
+                .orElseThrow(() -> new RuntimeException("Brand not found"));
 
         product.setName(productDto.getName());
         product.setCategory(category);
+        product.setBrand(brand);
         product.setPrice(productDto.getPrice());
         product.setDescription(productDto.getDescription());
 
