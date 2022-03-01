@@ -3,6 +3,9 @@ package ru.ilmira.persist.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "products")
@@ -16,16 +19,23 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 65535, columnDefinition = "LONGTEXT")
     private String description;
 
 
     @Column(name = "price", nullable = false, precision = 7, scale = 2)
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @ManyToOne(optional = false)
     private Category category;
+
+    @ManyToOne(optional = false)
+    private Brand brand;
+
+    @OneToMany(mappedBy = "product",
+               orphanRemoval = true,
+               cascade = CascadeType.ALL)
+    private List<Picture> pictures = new ArrayList<>();
 
     public Product() {
     }
@@ -76,5 +86,26 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id.equals(product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
