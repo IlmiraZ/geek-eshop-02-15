@@ -20,7 +20,7 @@
                 <div class="form-group mb-2 mr-2">
                     <label for="categoryId" class="sr-only">Categories</label>
                     <select class="form-control" id="categoryId" name="categoryId">
-                        <option th:selected="${param.categoryId == null || param.categoryId[0].isBlank()}" value="-1">All</option>
+                        <option th:selected="${param.categoryId == null || param.categoryId[0].isBlank()}" value="-1">All categories</option>
                         <option th:each="cat : ${categories}"
                                 th:text="${cat.name}"
                                 th:value="${cat.id}"
@@ -28,13 +28,12 @@
                         </option>
                     </select>
                 </div>
-
                 <div class="col-12 mt-3">
                     <form class="form-inline" th:method="get">
                         <div class="form-group mb-2 mr-2">
                             <label for="brandId" class="sr-only">Brands</label>
                             <select class="form-control" id="brandId" name="brandId">
-                                <option th:selected="${param.brandId == null || param.brandId[0].isBlank()}" value="-1">All</option>
+                                <option th:selected="${param.brandId == null || param.brandId[0].isBlank()}" value="-1">All brands</option>
                                 <option th:each="br : ${brands}"
                                         th:text="${br.name}"
                                         th:value="${br.id}"
@@ -42,6 +41,8 @@
                                 </option>
                             </select>
                         </div>
+                    </form>
+                </div>
 
                 <div class="form-group mb-2 mr-2">
                     <label for="usernameFilter" class="sr-only">Product name</label>
@@ -52,6 +53,7 @@
                 <button type="submit" class="btn btn-primary mb-2">Apply</button>
             </form>
         </div>
+
 
         <div class="col-12">
             <table class="table table-bordered my-2">
@@ -94,6 +96,7 @@
                th:text="${num}"
                th:href="@{/product(categoryId=${param.categoryId}, brandId=${param.brandId}, namePattern=${param.namePattern}, page=${num}, size=${data.size}, sortField=${param.sortField})}">1</a>
         </div>
+
     </div>
 </div>
 

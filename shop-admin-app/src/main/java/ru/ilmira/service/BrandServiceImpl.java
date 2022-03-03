@@ -24,7 +24,7 @@ public class BrandServiceImpl implements BrandService{
     @Override
     public List<BrandDto> findAll() {
         return brandRepository.findAll().stream()
-                .map(category -> new BrandDto(category.getId(), category.getName()))
+                .map(brand -> new BrandDto(brand.getId(), brand.getName()))
                 .collect(Collectors.toList());
 
     }
@@ -32,13 +32,13 @@ public class BrandServiceImpl implements BrandService{
     @Override
     public Page<BrandDto> findAll(Integer page, Integer size, String sortField) {
         return brandRepository.findAll(PageRequest.of(page, size, Sort.by(sortField)))
-                .map(category -> new BrandDto(category.getId(), category.getName()));
+                .map(brand -> new BrandDto(brand.getId(), brand.getName()));
     }
 
     @Override
     public Optional<BrandDto> findById(Long id) {
         return brandRepository.findById(id)
-                .map(category -> new BrandDto(category.getId(), category.getName()));
+                .map(brand -> new BrandDto(brand.getId(), brand.getName()));
     }
 
     @Override

@@ -12,6 +12,9 @@ public class BrandDto {
         this.id = id;
         this.name = name;
     }
+    public BrandDto(Long id) {
+        this.id = id;
+    }
 
     public BrandDto() {
 

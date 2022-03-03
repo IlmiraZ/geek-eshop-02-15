@@ -68,6 +68,7 @@ public class ProductController {
 
         model.addAttribute("product", new ProductDto());
         model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("brands", brandService.findAll());
         return "product_form";
     }
 
