@@ -10,15 +10,12 @@ public final class ProductSpecification {
         return (root, query, builder) -> builder.equal(root.get("category").get("id"), categoryId);
     }
 
+    public static Specification<Product> byBrand(long brandId) {
+        return (root, query, builder) -> builder.equal(root.get("brand").get("id"), brandId);
+    }
+
     public static Specification<Product> byName(String pattern) {
         return (root, query, builder) -> builder.like(root.get("name"), "%" + pattern + "%");
     }
 
-    public static Specification<Product> minPriceFilter(BigDecimal minPrice) {
-        return (root, query, builder) -> builder.ge(root.get("price"), minPrice);
-    }
-
-    public static Specification<Product> maxPriceFilter(BigDecimal maxPrice) {
-        return (root, query, builder) -> builder.ge(root.get("price"), maxPrice);
-    }
 }
