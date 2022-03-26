@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Page} from "../../model/page";
 
 @Component({
@@ -14,7 +14,7 @@ export class PaginationComponent implements OnInit, OnChanges {
 
   pageNumber: number = 1;
 
-  goToPageEvent = new EventEmitter<number>();
+  @Output() goToPageEvent = new EventEmitter<number>();
 
   constructor() { }
 

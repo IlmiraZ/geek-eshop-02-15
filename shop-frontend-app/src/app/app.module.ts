@@ -11,6 +11,7 @@ import { ProductFilterComponent } from './component/product-filter/product-filte
 import { PaginationComponent } from './component/pagination/pagination.component';
 import { GalleryComponent } from './component/gallery/gallery.component';
 import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
