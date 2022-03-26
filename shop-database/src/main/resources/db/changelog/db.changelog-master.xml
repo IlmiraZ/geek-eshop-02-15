@@ -31,4 +31,16 @@
         <tagDatabase tag="v-1.2"/>
     </changeSet>
 
+    <include file="v-2.0/root.changelog.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="400" author="ilmira_z">
+        <tagDatabase tag="v-2.0"/>
+    </changeSet>
+
+    <include file="v-2.1/root.changelog.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="500" author="ilmira_z">
+        <tagDatabase tag="v-2.1"/>
+    </changeSet>
+
 </databaseChangeLog>
