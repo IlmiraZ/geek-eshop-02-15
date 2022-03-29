@@ -1,10 +1,11 @@
 package ru.ilmira.controller.dto;
 
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductDto {
+public class ProductDto implements Serializable {
 
     private Long id;
 
