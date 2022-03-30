@@ -13,6 +13,7 @@ export class GalleryComponent implements OnInit {
   @Input()products: Product[] = [];
 
   constructor(private cartService: CartService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
