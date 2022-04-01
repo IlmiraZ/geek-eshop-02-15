@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.ilmira.aspect.TrackTime;
 import ru.ilmira.controller.dto.AddLineItemDto;
 import ru.ilmira.controller.dto.AllCartDto;
 import ru.ilmira.controller.dto.ProductDto;
@@ -29,6 +30,7 @@ public class CartController {
         this.productService = productService;
     }
 
+    @TrackTime
     @PostMapping(produces = "application/json", consumes = "application/json")
     public List<LineItem> addToCart(@RequestBody AddLineItemDto addLineItemDto) {
         logger.info("New LineItem. ProductId = {}, qty = {}", addLineItemDto.getProductId(), addLineItemDto.getQty());
@@ -44,6 +46,7 @@ public class CartController {
         cartService.removeProduct(lineItem.getProductDto(), lineItem.getColor(), lineItem.getMaterial());
     }
 
+    @TrackTime
     @GetMapping("/all")
     public AllCartDto findAll() {
         return new AllCartDto(cartService.getLineItems(), cartService.getSubTotal());

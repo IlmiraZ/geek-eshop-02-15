@@ -1,10 +1,14 @@
 package ru.ilmira.controller.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class ProductDto implements Serializable {
 
     private Long id;
@@ -13,6 +17,8 @@ public class ProductDto implements Serializable {
 
     private String description;
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "type")
+    @JsonSubTypes({ @JsonSubTypes.Type(name = "BIG_DECIMAL", value = BigDecimal.class) })
     private BigDecimal price;
 
     private CategoryDto category;
