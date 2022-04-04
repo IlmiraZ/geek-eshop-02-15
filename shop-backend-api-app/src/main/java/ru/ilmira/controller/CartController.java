@@ -46,7 +46,7 @@ public class CartController {
         cartService.removeProduct(lineItem.getProductDto(), lineItem.getColor(), lineItem.getMaterial());
     }
 
-    @TrackTime
+
     @GetMapping("/all")
     public AllCartDto findAll() {
         return new AllCartDto(cartService.getLineItems(), cartService.getSubTotal());

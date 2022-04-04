@@ -15,19 +15,19 @@ public class SessionConfig implements BeanClassLoaderAware {
 
     private ClassLoader loader;
 
-    @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
-        this.loader = classLoader;
-    }
-
     @Bean
     RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-        return new GenericJackson2JsonRedisSerializer(objectMapper());
+        return new GenericJackson2JsonRedisSerializer();
     }
 
     private ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModules(SecurityJackson2Modules.getModules(this.loader));
         return mapper;
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.loader = classLoader;
     }
 }
