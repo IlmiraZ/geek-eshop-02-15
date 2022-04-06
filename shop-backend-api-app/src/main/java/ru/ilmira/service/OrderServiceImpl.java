@@ -2,6 +2,7 @@ package ru.ilmira.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import ru.ilmira.controller.dto.OrderDto;
 import ru.ilmira.controller.dto.OrderLineItemDto;
@@ -12,6 +13,7 @@ import ru.ilmira.persist.model.User;
 import ru.ilmira.persist.repository.OrderRepository;
 import ru.ilmira.persist.repository.ProductRepository;
 import ru.ilmira.persist.repository.UserRepository;
+import ru.ilmira.service.dto.OrderStatus;
 
 
 import javax.transaction.Transactional;
@@ -33,16 +35,20 @@ public class OrderServiceImpl implements OrderService{
 
     private final ProductRepository productRepository;
 
+    private final SimpMessagingTemplate template;
+
 
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             CartService cartService,
                             UserRepository userRepository,
-                            ProductRepository productRepository) {
+                            ProductRepository productRepository,
+                            SimpMessagingTemplate template) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.template = template;
     }
 
 
@@ -100,6 +106,19 @@ public class OrderServiceImpl implements OrderService{
                 .collect(Collectors.toList());
         order.setOrderLineItems(orderLineItems);
         orderRepository.save(order);
+        cartService.clear();
+
+        new Thread(() -> {
+            for (Order.OrderStatus status : Order.OrderStatus.values()) {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                logger.info("sending next status {} for order {}", status, order.getId());
+                template.convertAndSend("/order_out/order", new OrderStatus(order.getId(), status.toString()));
+            }
+        }).start();
     }
 
     private Product findProductById(Long id) {

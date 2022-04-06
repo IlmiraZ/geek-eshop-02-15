@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {AllCartDto} from "../../model/all-cart-dto";
 import {CartService} from "../../service/cart.service";
 import {LineItem} from "../../model/line-item";
+import {OrderService} from "../../service/order.service";
+import {AuthService} from "../../service/auth.service";
+import {Router} from "@angular/router";
 
-export const CART_URL = 'cart'
 
 @Component({
   selector: 'app-cart-page',
@@ -14,7 +16,10 @@ export class CartPageComponent implements OnInit {
 
   content?: AllCartDto;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService,
+              private orderService: OrderService,
+              private authService: AuthService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -27,4 +32,21 @@ export class CartPageComponent implements OnInit {
         this.content = res;
       });
   }
+
+  private _createOrderCallback() {
+    this.orderService.createOrder().subscribe();
+  }
+
+  createOrder() {
+    if (!this.authService.isAuthenticated()) {
+      this.authService.redirectUrl = '/order';
+      this.authService.callbackAfterSuccess = this._createOrderCallback.bind(this);
+      this.router.navigateByUrl('/login');
+      return;
+    }
+    this.orderService.createOrder()
+      .subscribe(() => this.router.navigateByUrl('/order'));;
+  }
 }
+
+
