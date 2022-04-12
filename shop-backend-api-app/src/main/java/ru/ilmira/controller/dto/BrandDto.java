@@ -1,8 +1,11 @@
 package ru.ilmira.controller.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.io.Serializable;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class BrandDto implements Serializable {
     private Long id;
 
@@ -12,9 +15,6 @@ public class BrandDto implements Serializable {
     public BrandDto(Long id, String name) {
         this.id = id;
         this.name = name;
-    }
-    public BrandDto(Long id) {
-        this.id = id;
     }
 
     public BrandDto() {

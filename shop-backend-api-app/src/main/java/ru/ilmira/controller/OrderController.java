@@ -15,7 +15,7 @@ import java.util.List;
 
 @PreAuthorize("isAuthenticated()")
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/v1/order")
 public class OrderController {
 
     private final OrderService orderService;

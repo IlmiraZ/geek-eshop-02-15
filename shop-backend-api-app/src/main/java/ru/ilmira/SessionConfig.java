@@ -17,7 +17,7 @@ public class SessionConfig implements BeanClassLoaderAware {
 
     @Bean
     RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-        return new GenericJackson2JsonRedisSerializer();
+        return new GenericJackson2JsonRedisSerializer(objectMapper());
     }
 
     private ObjectMapper objectMapper() {
