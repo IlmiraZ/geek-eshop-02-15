@@ -1,0 +1,79 @@
+version: "3.9"
+services:
+  cloud-config:
+    image: spring-cloud-config/web:latest
+    ports:
+      - "8888"
+
+  shop-frontend-app:
+    image: shop-frontend-app:latest
+    ports:
+      - "8881:80"
+    restart: always
+    depends_on:
+      - shop-admin-app
+      - shop-backend-api-app
+      - picture-service-app
+
+  shop-admin-app:
+    image: shop-admin-app/web:latest
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./storage:/var/storage
+    environment:
+      - PROFILE=dock
+      - CONFIG_SERVER_URL=http://cloud-config:8888
+    command: bash -c "/apps/wait-for-service.sh db 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    restart: always
+    depends_on:
+      - db
+      - redis
+      - cloud-config
+
+  shop-backend-api-app:
+    image: shop-backend-api-app/web:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - PROFILE=dock
+      - CONFIG_SERVER_URL=http://cloud-config:8888
+    command: bash -c "/apps/wait-for-service.sh db 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    restart: always
+    depends_on:
+      - db
+      - redis
+      - cloud-config
+
+  picture-service-app:
+    image: shop-picture-service-api/web:latest
+    ports:
+      - "8080"
+    volumes:
+      - ./storage:/var/storage
+    environment:
+      - PROFILE=dock
+      - CONFIG_SERVER_URL=http://cloud-config:8888
+    command: bash -c "/apps/wait-for-service.sh db 3306 && /apps/wait-for-service.sh cloud-config 8888 && /apps/entrypoint.sh"
+    restart: always
+    depends_on:
+      - db
+      - cloud-config
+
+  db:
+    image: mysql:8.0.28
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/C/GeekBrains/geek-eshop-02-15/db-data:/var/lib/mysql"
+
+
+  redis:
+    container_name: redis
+    image: 'bitnami/redis:latest'
+    environment:
+      ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+      - "6379"

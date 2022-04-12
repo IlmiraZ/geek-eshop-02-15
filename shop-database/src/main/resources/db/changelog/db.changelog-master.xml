@@ -13,37 +13,37 @@
         <tagDatabase tag="db_init"/>
     </changeSet>
 
-    <include file="v-1.0/root.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/v-1.0/root.changelog.xml"/>
 
     <changeSet id="100" author="ilmira_z">
         <tagDatabase tag="v-1.0"/>
     </changeSet>
 
-    <include file="v-1.1/root.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/v-1.1/root.changelog.xml"/>
 
     <changeSet id="200" author="ilmira_z">
         <tagDatabase tag="v-1.1"/>
     </changeSet>
 
-    <include file="v-1.2/root.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/v-1.2/root.changelog.xml"/>
 
     <changeSet id="300" author="ilmira_z">
         <tagDatabase tag="v-1.2"/>
     </changeSet>
 
-    <include file="v-2.0/root.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/v-2.0/root.changelog.xml"/>
 
     <changeSet id="400" author="ilmira_z">
         <tagDatabase tag="v-2.0"/>
     </changeSet>
 
-    <include file="v-2.1/root.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/v-2.1/root.changelog.xml"/>
 
     <changeSet id="500" author="ilmira_z">
         <tagDatabase tag="v-2.1"/>
     </changeSet>
 
-    <include file="v-3.0/root.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/v-3.0/root.changelog.xml"/>
 
     <changeSet id="600" author="ilmira_z">
         <tagDatabase tag="v-3.0"/>
