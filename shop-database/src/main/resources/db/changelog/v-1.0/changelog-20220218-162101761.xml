@@ -15,7 +15,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
             </column>
-            <column name="login" type="VARCHAR(255)">
+            <column name="username" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="VARCHAR(255)">
@@ -37,7 +37,7 @@
         <addUniqueConstraint columnNames="name" constraintName="UC_ROLESNAME_COL" tableName="roles"/>
     </changeSet>
     <changeSet author="ilmira_z (generated)" id="1645201277032-5">
-        <addUniqueConstraint columnNames="login" constraintName="UC_USERSLOGIN_COL" tableName="users"/>
+        <addUniqueConstraint columnNames="username" constraintName="UC_USERSUSERNAME_COL" tableName="users"/>
     </changeSet>
     <changeSet author="ilmira_z (generated)" id="1645201277032-6">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_roles" constraintName="FK2o0jvgh89lemvvo17cbqvdxaa" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>

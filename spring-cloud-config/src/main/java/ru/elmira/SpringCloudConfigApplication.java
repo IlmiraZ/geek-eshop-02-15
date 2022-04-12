@@ -1,4 +1,4 @@
-package com.example.springcloudconfig;
+package ru.elmira;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

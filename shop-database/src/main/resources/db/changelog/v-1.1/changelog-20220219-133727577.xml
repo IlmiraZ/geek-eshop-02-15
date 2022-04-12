@@ -6,7 +6,7 @@
         </addColumn>
     </changeSet>
     <changeSet author="ilmira_z (generated)" id="1645277864244-3">
-        <dropUniqueConstraint constraintName="UC_USERSLOGIN_COL" tableName="users"/>
+        <dropUniqueConstraint constraintName="UC_USERSUSERNAME_COL" tableName="users"/>
     </changeSet>
     <changeSet author="ilmira_z (generated)" id="1645277864244-1">
         <dropNotNullConstraint columnDataType="varchar(255)" columnName="password" tableName="users"/>

@@ -4,12 +4,11 @@
                    xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
-    <include file="changelog-20220301-180050612.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/v-2.1/changelog-20220301-180050612.xml"/>
     <changeSet id="1646154688504-5" author="ilmira_z">
-        <sqlFile path="insert-brands.sql"
+        <sqlFile path="db/changelog/v-2.1/insert-brands.sql"
                  dbms="mysql"
                  endDelimiter="GO"
-                 relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>
 
