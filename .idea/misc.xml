@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/spring-eureka/pom.xml" />
         <option value="$PROJECT_DIR$/spring-cloud-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/shop-picture-service-api/pom.xml" />
+        <option value="$PROJECT_DIR$/shop-delivery-service/pom.xml" />
       </list>
     </option>
   </component>
