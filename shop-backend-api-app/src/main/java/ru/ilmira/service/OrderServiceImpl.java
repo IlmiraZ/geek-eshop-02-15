@@ -2,6 +2,8 @@ package ru.ilmira.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import ru.ilmira.controller.dto.OrderDto;
@@ -37,18 +39,22 @@ public class OrderServiceImpl implements OrderService{
 
     private final SimpMessagingTemplate template;
 
+    private final RabbitTemplate rabbitTemplate;
+
 
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             CartService cartService,
                             UserRepository userRepository,
                             ProductRepository productRepository,
-                            SimpMessagingTemplate template) {
+                            SimpMessagingTemplate template,
+                            RabbitTemplate rabbitTemplate) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.template = template;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
 
@@ -78,7 +84,7 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public void createOrder(String username) {
         if (cartService.getLineItems().isEmpty()) {
-            logger.info("Can't create order for empty Cart!");
+            logger.info("Can't create order for empty Cart");
             return;
         }
 
@@ -107,22 +113,20 @@ public class OrderServiceImpl implements OrderService{
         order.setOrderLineItems(orderLineItems);
         orderRepository.save(order);
         cartService.clear();
-
-        new Thread(() -> {
-            for (Order.OrderStatus status : Order.OrderStatus.values()) {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                logger.info("sending next status {} for order {}", status, order.getId());
-                template.convertAndSend("/order_out/order", new OrderStatus(order.getId(), status.toString()));
-            }
-        }).start();
+        rabbitTemplate.convertAndSend("order.exchange", "new_order",
+                new OrderStatus(order.getId(), order.getStatus().toString()));
     }
 
     private Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No product with id"));
+    }
+
+    @RabbitListener(queues = "processed.order.queue")
+    public void receiver(OrderStatus orderStatus) {
+        logger.info("New order status received id = {}, status = {}",
+                orderStatus.getOrderId(), orderStatus.getStatus());
+
+        template.convertAndSend("/order_out/order", orderStatus);
     }
 }
